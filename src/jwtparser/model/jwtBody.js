@@ -16,37 +16,37 @@ export class JwtBody {
         /**
          * @type {SubjectClaim}
          */
-        this.subject = this.getClaim(claimsObject, SubjectClaim.NAME, SubjectClaim);
+        this.subject = this.asTypedClaim(claimsObject, SubjectClaim.NAME, SubjectClaim);
 
         /**
          * @type {IssuerClaim}
          */
-        this.issuer = this.getClaim(claimsObject, IssuerClaim.NAME, IssuerClaim);
+        this.issuer = this.asTypedClaim(claimsObject, IssuerClaim.NAME, IssuerClaim);
 
         /**
          * @type {AudienceClaim}
          */
-        this.audience = this.getClaim(claimsObject, AudienceClaim.NAME, AudienceClaim);
+        this.audience = this.asTypedClaim(claimsObject, AudienceClaim.NAME, AudienceClaim);
 
         /**
          * @type {JwtIdClaim}
          */
-        this.jwtId = this.getClaim(claimsObject, JwtIdClaim.NAME, JwtIdClaim);
+        this.jwtId = this.asTypedClaim(claimsObject, JwtIdClaim.NAME, JwtIdClaim);
 
         /**
          * @type {ExpiryClaim}
          */
-        this.expiry = this.getClaim(claimsObject, ExpiryClaim.NAME, ExpiryClaim);
+        this.expiry = this.asTypedClaim(claimsObject, ExpiryClaim.NAME, ExpiryClaim);
 
         /**
          * @type {NotBeforeClaim}
          */
-        this.notBefore = this.getClaim(claimsObject, NotBeforeClaim.NAME, NotBeforeClaim);
+        this.notBefore = this.asTypedClaim(claimsObject, NotBeforeClaim.NAME, NotBeforeClaim);
 
         /**
          * @type {NotBeforeClaim}
          */
-        this.issuedAt = this.getClaim(claimsObject, IssuedAtClaim.NAME, NotBeforeClaim);
+        this.issuedAt = this.asTypedClaim(claimsObject, IssuedAtClaim.NAME, NotBeforeClaim);
 
         /**
          * @type {Map}
@@ -60,7 +60,7 @@ export class JwtBody {
      * @param {*} attributeName 
      * @returns {*}
      */
-    getClaim(claimsObject, attributeName, className) {
+    asTypedClaim(claimsObject, attributeName, className) {
         if (claimsObject === null) {
             return null;
         }
