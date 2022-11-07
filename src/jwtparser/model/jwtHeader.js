@@ -1,5 +1,6 @@
 import { AlgorithmMeta } from "./header/algorithmMeta.js";
 import { TypeMeta } from "./header/typeMeta.js";
+import { KeyIdMeta } from "./header/keyIdMeta.js";
 
 export class JwtHeader {
 
@@ -14,6 +15,11 @@ export class JwtHeader {
          * @type {TypeMeta}
          */
         this.type = this.getMeta(metaObject, TypeMeta.NAME, TypeMeta);
+
+        /**
+         * @type {TypeMeta}
+         */
+         this.kid = this.getMeta(metaObject, KeyIdMeta.NAME, KeyIdMeta);
     }
 
     /**
