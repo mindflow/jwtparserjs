@@ -1,4 +1,4 @@
-import { Map } from "coreutil_v1"
+import { Map, StringUtils } from "coreutil_v1"
 import { AudienceClaim } from "./body/audienceClaim.js";
 import { JwtEntry } from "./jwtEntry.js";
 import { ExpiryClaim } from "./body/expiryClaim.js";
@@ -13,62 +13,18 @@ export class JwtBody {
 
     constructor(claimsObject = null) {
 
-        /**
-         * @type {SubjectClaim}
-         */
-        this.subject = this.asTypedClaim(claimsObject, SubjectClaim.NAME, SubjectClaim);
-
-        /**
-         * @type {IssuerClaim}
-         */
-        this.issuer = this.asTypedClaim(claimsObject, IssuerClaim.NAME, IssuerClaim);
-
-        /**
-         * @type {AudienceClaim}
-         */
-        this.audience = this.asTypedClaim(claimsObject, AudienceClaim.NAME, AudienceClaim);
-
-        /**
-         * @type {JwtIdClaim}
-         */
-        this.jwtId = this.asTypedClaim(claimsObject, JwtIdClaim.NAME, JwtIdClaim);
-
-        /**
-         * @type {ExpiryClaim}
-         */
-        this.expiry = this.asTypedClaim(claimsObject, ExpiryClaim.NAME, ExpiryClaim);
-
-        /**
-         * @type {NotBeforeClaim}
-         */
-        this.notBefore = this.asTypedClaim(claimsObject, NotBeforeClaim.NAME, NotBeforeClaim);
-
-        /**
-         * @type {NotBeforeClaim}
-         */
-        this.issuedAt = this.asTypedClaim(claimsObject, IssuedAtClaim.NAME, NotBeforeClaim);
-
-        /**
-         * @type {Map}
-         */
         this.namedClaims = this.asMap(claimsObject);
+
     }
 
     /**
      * 
-     * @param {*} claimsObject 
-     * @param {*} attributeName 
+     * @param {*} value 
+     * @param {*} className 
      * @returns {*}
      */
-    asTypedClaim(claimsObject, attributeName, className) {
-        if (claimsObject === null) {
-            return null;
-        }
-        const claimsValue = claimsObject[attributeName];
-        if(claimsValue === null || claimsValue === undefined) {
-            return null;
-        }
-        return new className(claimsValue);
+    asTypedClaim(value, className) {
+        return new className(value);
     }
 
     asMap(claimsObject) {
@@ -77,7 +33,7 @@ export class JwtBody {
             return namedClaims;
         }
         for ( const [key, value] of Object.entries(claimsObject)) {
-            namedClaims.set(key, new JwtEntry(key, value));
+            namedClaims.set(key, this.asMappedClaim(key, value));
         }
         return namedClaims;
     }
@@ -91,4 +47,76 @@ export class JwtBody {
         return this.namedClaims.get(name);
     }
 
+    /**
+     * 
+     * @param {String} name 
+     * @returns {JwtEntry}
+     */
+     getNamedClaimValue(name) {
+        if (this.namedClaims.get(name)) {
+            return this.namedClaims.get(name).value;
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @param {String} key 
+     * @param {String} value 
+     * @returns {JwtEntry}
+     */
+    asMappedClaim(key, value) {
+
+        if (StringUtils.nonNullEquals(key, SubjectClaim.NAME)) {
+            return this.asTypedClaim(value, SubjectClaim);
+        }
+        if (StringUtils.nonNullEquals(key, IssuerClaim.NAME)) {
+            return this.asTypedClaim(value, IssuerClaim);
+        }
+        if (StringUtils.nonNullEquals(key, AudienceClaim.NAME)) {
+            return this.asTypedClaim(value, AudienceClaim);
+        }
+        if (StringUtils.nonNullEquals(key, JwtIdClaim.NAME)) {
+            return this.asTypedClaim(value, JwtIdClaim);
+        }
+        if (StringUtils.nonNullEquals(key, ExpiryClaim.NAME)) {
+            return this.asTypedClaim(value, ExpiryClaim);
+        }
+        if (StringUtils.nonNullEquals(key, NotBeforeClaim.NAME)) {
+            return this.asTypedClaim(value, NotBeforeClaim);
+        }
+        if (StringUtils.nonNullEquals(key, IssuedAtClaim.NAME)) {
+            return this.asTypedClaim(value, IssuedAtClaim);
+        }
+        return new JwtEntry(key, value);
+         
+    }
+
+    get sub() {
+        return this.getNamedClaimValue(SubjectClaim.NAME);
+    }
+
+    get iss() {
+        return this.getNamedClaimValue(IssuerClaim.NAME);
+    }
+
+    get aud() {
+        return this.getNamedClaimValue(AudienceClaim.NAME);
+    }
+
+    get jti() {
+        return this.getNamedClaimValue(JwtIdClaim.NAME);
+    }
+
+    get exp() {
+        return this.getNamedClaimValue(ExpiryClaim.NAME);
+    }
+
+    get nbf() {
+        return this.getNamedClaimValue(NotBeforeClaim.NAME);
+    }
+
+    get iat() {
+        return this.getNamedClaimValue(IssuedAtClaim.NAME);
+    }
 }

@@ -9,7 +9,11 @@ export class JwtIdClaim extends JwtEntry {
      * @param {String} value 
      */
     constructor(value) {
-        super(JwtIdClaim.NAME, value)
+        super(JwtIdClaim.NAME, value);
+    }
+
+    get label() {
+        return "JWT Id";
     }
 
 }

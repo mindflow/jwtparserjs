@@ -9,7 +9,10 @@ export class AudienceClaim extends JwtEntry {
      * @param {String} value 
      */
     constructor(value) {
-        super(AudienceClaim.NAME, value)
+        super(AudienceClaim.NAME, value);
     }
 
+    get label() {
+        return "Audience";
+    }
 }

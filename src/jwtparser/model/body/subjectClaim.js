@@ -9,7 +9,10 @@ export class SubjectClaim extends JwtEntry {
      * @param {String} value 
      */
     constructor(value) {
-        super(SubjectClaim.NAME, value)
+        super(SubjectClaim.NAME, value);
     }
 
+    get label() {
+        return "Subject";
+    }
 }
