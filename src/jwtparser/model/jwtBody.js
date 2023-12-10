@@ -7,6 +7,7 @@ import { JwtIdClaim } from "./body/jwtIdClaim.js";
 import { NotBeforeClaim } from "./body/notBeforeClaim.js";
 import { SubjectClaim } from "./body/subjectClaim.js";
 import { IssuedAtClaim } from "./body/issuedAtClaim.js";
+import { ScopeClaim } from "./body/scopeClaim.js";
 
 
 export class JwtBody {
@@ -88,6 +89,9 @@ export class JwtBody {
         if (StringUtils.nonNullEquals(key, IssuedAtClaim.NAME)) {
             return this.asTypedClaim(value, IssuedAtClaim);
         }
+        if (StringUtils.nonNullEquals(key, ScopeClaim.NAME)) {
+            return this.asTypedClaim(value, ScopeClaim);
+        }
         return new JwtEntry(key, value);
          
     }
@@ -118,5 +122,9 @@ export class JwtBody {
 
     get iat() {
         return this.getNamedClaimValue(IssuedAtClaim.NAME);
+    }
+
+    get scope() {
+        return this.getNamedClaimValue(ScopeClaim.NAME);
     }
 }
